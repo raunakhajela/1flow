@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
+    <script>
+      let paddleSandboxId = 9514; // this **MUST** not be used in product, need to request new one for production
+      window.Paddle.Environment.set("sandbox");
+      window.Paddle.Setup({
+        vendor: paddleSandboxId,
+      });
+    </script>
+  </head>
+
+  <body>
+    <select id="planSelector">
+      <option value="monthly">Monthly</option>
+      <option value="yearly">Yearly</option>
+    </select>
+
+    <a id="planPurchase" href="#!" class="paddle_button" data-product="41034">Buy Monthly</a>
+
+    <script>
+      document.querySelector("#planSelector").addEventListener("change", (e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        let pp = document.querySelector("#planPurchase");
+        let t = e.target;
+        switch (t.value) {
+          case "monthly":
+            pp.setAttribute("data-product", "41034"); // dont hardcode this will change in vendor
+            pp.textContent = "Buy Monthly!";
+            break;
+          case "yearly":
+            pp.setAttribute("data-product", "41038"); // dont hardcode this will change in vendor
+            pp.textContent = "Buy Yearly!";
+            break;
+          default:
+            console.log("wrong key");
+        }
+        console.log(e.target.value);
+      });
+    </script>
+  </body>
+</html>

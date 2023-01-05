@@ -1,0 +1,77 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build_windows:
+    name: Build for Windows
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout repository
+      - uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16.13.2
+        name: Setup nodejs
+      - run: yarn install
+        name: Install node modules
+      - run: |
+          printf "${{ secrets.ENV_FILE }}" > .env
+        name: Provide env file
+        shell: bash
+      - run: yarn release
+        name: Build and push
+        env:
+          GITHUB_TOKEN: ${{secrets.ELECTRON_PUBLISH_TOKEN}}
+          GH_TOKEN: ${{secrets.ELECTRON_PUBLISH_TOKEN}}
+
+  build_macos:
+    name: Build for macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout repository
+      - uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16.13.2
+        name: Setup nodejs
+      - run: yarn install
+        name: Install node modules
+      - run: |
+          printf "${{ secrets.ENV_FILE }}" > .env
+        name: Provide env file
+        shell: bash
+      - run: yarn release
+        name: Build and push
+        env:
+          GITHUB_TOKEN: ${{secrets.ELECTRON_PUBLISH_TOKEN}}
+          GH_TOKEN: ${{secrets.ELECTRON_PUBLISH_TOKEN}}
+
+
+  build_linux:
+    name: Build for Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout repository
+      - uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16.13.2
+        name: Setup nodejs
+      - run: yarn install
+        name: Install node modules
+      - run: |
+          printf "${{ secrets.ENV_FILE }}" > .env
+        name: Provide env file
+        shell: bash
+      - run: yarn release
+        name: Build and push
+        env:
+          GITHUB_TOKEN: ${{secrets.ELECTRON_PUBLISH_TOKEN}}
+          GH_TOKEN: ${{secrets.ELECTRON_PUBLISH_TOKEN}}
